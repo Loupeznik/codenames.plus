@@ -28,7 +28,7 @@ readline.createInterface({
 
 // Load Undercover words into an array
 let undercoverwords = []
-filename = './server/undercover-words.txt'
+filename = './server/fgt.txt'
 readline.createInterface({
     input: fs.createReadStream(filename),
     terminal: false

@@ -198,7 +198,7 @@ buttonServerMessageOkay.onclick = () => {
 // Server Responses to this client
 ////////////////////////////////////////////////////////////////////////////
 socket.on('serverStats', (data) => {        // Client gets server stats
-  document.getElementById('server-stats').innerHTML = "Players: " + data.players + " | Rooms: " + data.rooms
+  document.getElementById('server-stats').innerHTML = "Hráči: " + data.players + " | Romky: " + data.rooms
 })
 
 socket.on('joinResponse', (data) =>{        // Response to joining room
@@ -243,7 +243,7 @@ socket.on('afkWarning', () => {    // Response to Afk Warning
 socket.on('afkKicked', () => {    // Response to Afk Kick
   afkWindow.style.display = 'none'
   serverMessageWindow.style.display = 'block'
-  serverMessage.innerHTML = 'You were kicked for being AFK'
+  serverMessage.innerHTML = 'Byl si moc dlouho na fésbuku, hra tě kopla'
   overlay.style.display = 'block'
 })
 
@@ -301,10 +301,10 @@ function wipeBoard(){
 function updateInfo(game, team){
   scoreBlue.innerHTML = game.blue                         // Update the blue tiles left
   scoreRed.innerHTML = game.red                           // Update the red tiles left
-  turnMessage.innerHTML = game.turn + "'s turn"           // Update the turn msg
+  turnMessage.innerHTML = game.turn + " hraje"           // Update the turn msg
   turnMessage.className = game.turn                       // Change color of turn msg
   if (game.over){                                         // Display winner
-    turnMessage.innerHTML = game.winner + " wins!"
+    turnMessage.innerHTML = game.winner + " vyhrává!"
     turnMessage.className = game.winner
   }
   if (team !== game.turn) endTurn.disabled = true         // Disable end turn button for opposite team
@@ -316,7 +316,7 @@ function updateInfo(game, team){
 function updateTimerSlider(game, mode){
   let minutes = (game.timerAmount - 1) / 60
   timerSlider.value = minutes
-  timerSliderLabel.innerHTML = "Timer Length : " + timerSlider.value + "min"
+  timerSliderLabel.innerHTML = "Čas : " + timerSlider.value + "min"
 
   // If the mode is not timed, dont show the slider
   if (mode === 'casual'){
@@ -338,7 +338,7 @@ function updatePacks(game){
   else buttonUndercovercards.className = ''
   if (game.nlss) buttonNLSScards.className = 'enabled'
   else buttonNLSScards.className = ''
-  document.getElementById('word-pool').innerHTML = "Word Pool: " + game.words.length
+  document.getElementById('word-pool').innerHTML = "Počet slov: " + game.words.length
 }
 
 // Update the board
@@ -397,11 +397,4 @@ function updatePlayerlist(players){
       blueTeam.appendChild(li)
     }
   }
-}
-
-// Client Side UI Elements
-
-// Hide donate banner
-document.getElementById('donate-hide').onclick = () => { 
-  document.getElementById('donate').className = 'hide'
 }

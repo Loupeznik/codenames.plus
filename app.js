@@ -18,6 +18,7 @@ function listen(){
 }
 
 // Force SSL
+/*
 app.use((req, res, next) => {
   if (req.header('x-forwarded-proto') !== 'https') {
     res.redirect(`https://${req.header('host')}${req.url}`)
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
     next();
   }
 });
+*/
 
 // Files for client
 app.use(express.static('public'))
@@ -35,20 +37,6 @@ let io = require('socket.io')(server)
 // Catch wildcard socket events
 var middleware = require('socketio-wildcard')()
 io.use(middleware)
-
-// Make API requests
-const Heroku = require('heroku-client')
-const heroku = new Heroku({ token:process.env.API_TOKEN})// DELETE requests
-
-// Daily Server Restart time
-// UTC 13:00:00 = 9AM EST
-let restartHour = 11//13 original
-let restartMinute = 0//0
-let restartSecond = 5
-// restart warning time
-let restartWarningHour = 10//12 original
-let restartWarningMinute = 50//50
-let restartWarningSecond = 2
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -453,36 +441,8 @@ function logStats(addition){
   console.log(stats + addition)
 }
 
-// Restart Heroku Server
-function herokuRestart(){
-  // Let each socket know the server restarted and boot them to lobby
-  for (let socket in SOCKET_LIST){
-    SOCKET_LIST[socket].emit('serverMessage', {msg:"Server Successfully Restarted for Maintnence"})
-    SOCKET_LIST[socket].emit('leaveResponse', {success:true})
-  }
-  heroku.delete('/apps/codenames-plus/dynos/').then(app => {})
-}
-
-// Warn users of restart
-function herokuRestartWarning(){
-  for (let player in PLAYER_LIST){
-    SOCKET_LIST[player].emit('serverMessage', {msg:"Scheduled Server Restart in 10 Minutes"})
-  }
-}
-
 // Every second, update the timer in the rooms that are on timed mode
 setInterval(()=>{
-  // Server Daily Restart Logic
-  let time = new Date()
-  // Warn clients of restart 10min in advance
-  if (time.getHours() === restartWarningHour &&
-      time.getMinutes() === restartWarningMinute &&
-      time.getSeconds() < restartWarningSecond) herokuRestartWarning()
-  // Restart server at specified time
-  if (time.getHours() === restartHour &&
-      time.getMinutes() === restartMinute &&
-      time.getSeconds() < restartSecond) herokuRestart()
-  
   // AFK Logic
   for (let player in PLAYER_LIST){
     PLAYER_LIST[player].afktimer--      // Count down every players afk timer

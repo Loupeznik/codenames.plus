@@ -66,42 +66,6 @@ Grey: #D6D2C9
   padding: 5px;
 }
 
-#donate {
-  position: absolute;
-  top: 0; 
-  display: block;
-  width: 100vw;
-  text-align: center;
-  font-size: 14px;
-  padding: 1px;
-  color: #323032;
-  background: #11779F;
-  box-sizing: border-box;
-  font-weight: bold;
-}
-
-#donate.hide {
-  display: none;
-}
-
-#donate-link {
-  color: #bbbbbb;
-  text-decoration: none;
-}
-
-#donate-link:hover {
-  color: #bbbbbb;
-  text-decoration: underline;
-}
-
-#donate-hide {
-  color: #1b1b1b;
-  text-decoration: none;
-  font-weight: normal;
-  cursor: pointer;
-  margin-left: 4px;
-}
-
 #app {
   position: relative;
   display: block;
@@ -181,12 +145,16 @@ body {
 }
 
 #about-window a {
-  display: block;
+  /* display: block; */
   width: 300px;
   margin: 0 auto;
   text-align: center;
   text-decoration: none;
   color: #323032;
+}
+
+#about-window .a-block {
+  display: block;
 }
 
 #about-window a:hover {
